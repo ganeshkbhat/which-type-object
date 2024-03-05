@@ -15,26 +15,27 @@
 
 'use strict';
 
-const { tagTester,
+const { 
+  TagTester,
   TypeTester,
-  isBufferLike } = require('../index');
+  isBufferLike 
+} = require('../index');
 
 
-console.log("isString: ", true, isString("tester"))
-console.log("isNumber : ", true, isNumber(1))
-console.log("isBoolean : ", true, isBoolean(true))
-console.log("isDate : ", false, isDate(Date.now()))
-console.log("isDate : ", true, isDate(new Date(Date.now())))
-var isArray = tagTester("Array");
-console.log("isArray : ", true, isArray([1, 2, 3]))
-console.log("isRegExp : ", true, isRegExp(new RegExp(/^d/g)))
-console.log("isRegExp : ", true, isRegExp(/^d/))
-console.log("isError : ", false, isError(Error))
-console.log("isError : ", true, isError(new Error("Tester")))
-console.log("isSymbol : ", true, isSymbol(Symbol("Tester")))
-console.log("isArrayBuffer : ", false, isArrayBuffer([]))
-console.log("isArrayBuffer : ", false, isArrayBuffer(Buffer.from([])))
-console.log("isArrayBuffer : ", true, isArrayBuffer(new ArrayBuffer([])))
-console.log("isFunction : ", true, isFunction(() => { }))
-console.log("isDataView : ", false, isDataView([]))
-console.log("hasObjectTag : ", true, hasObjectTag({ "sc": 10 }))
+console.log("isString: ", true, TagTester("String")("tester"));
+console.log("isNumber : ", true, TagTester("Number")(1));
+console.log("isBoolean : ", true, TagTester("Boolean")(true));
+console.log("isDate : ", false, TagTester("Date")(Date.now()));
+console.log("isDate : ", true, TagTester("Date")(new Date(Date.now())));
+console.log("isArray : ", true, TagTester("Array")([1, 2, 3]));
+console.log("isRegExp : ", true, TagTester("RegExp")(new RegExp(/^d/g)));
+console.log("isRegExp : ", true, TagTester("RegExp")(/^d/));
+console.log("isError : ", false, TagTester("Error")(Error));
+console.log("isError : ", true, TagTester("Error")(new Error("Tester")));
+console.log("isSymbol : ", true, TagTester("Symbol")(Symbol("Tester")));
+console.log("isArrayBuffer : ", false, TagTester("ArrayBuffer")([]));
+console.log("isArrayBuffer : ", false, TagTester("ArrayBuffer")(Buffer.from([])));
+console.log("isArrayBuffer : ", true, TagTester("ArrayBuffer")(new ArrayBuffer([])));
+console.log("isFunction : ", true, TagTester("Function")(() => { }));
+console.log("isDataView : ", false, TagTester("DataView")([]));
+console.log("hasObjectTag : ", true, TagTester("Object")({ "sc": 10 }));
