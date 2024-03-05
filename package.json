@@ -1,0 +1,52 @@
+{
+  "name": "which-type-object",
+  "version": "1.0.0",
+  "description": "determine which type of js is the object using which-type",
+  "main": "index.js",
+  "exports": {
+    "require": "./index.js",
+    "import": "./index.mjs"
+  },
+  "unpkg": "index.min.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ganeshkbhat/which-type.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ganeshkbhat/which-type/issues"
+  },
+  "homepage": "https://github.com/ganeshkbhat/which-type#readme",
+  "scripts": {
+    "test": "mocha --reporter spec --recursive --timeout 60000",
+    "uglify": "uglifyjs --compress --mangle reserved=['$','require','exports'] index.js -o index.min.js",
+    "gitadd": "git add .",
+    "build": "tsc index.js --allowJs --emitDeclarationOnly --declaration --declarationMap --sourceMap"
+  },
+  "pre-commit": {
+    "run": [
+      "uglify",
+      "build",
+      "gitadd",
+      "test"
+    ]
+  },
+  "keywords": [
+    
+  ],
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "chai": "^4.4.1",
+    "mocha": "^10.2.0",
+    "pre-commit": "^1.2.2",
+    "pre-push": "^0.1.4",
+    "sinon": "^17.0.1",
+    "typescript": "^5.3.3",
+    "uglify-js": "^3.17.4",
+    "unimported": "^1.31.1"
+  },
+  "author": "Ganesh B <ganeshsurfs@gmail.com>",
+  "license": "MIT"
+}
