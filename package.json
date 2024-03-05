@@ -1,7 +1,7 @@
 {
   "name": "which-type-object",
   "version": "1.0.0",
-  "description": "determine which type of js is the object using which-type",
+  "description": "use which-type-object to detect which type or javascript class instance or object tag an object of javascript is",
   "main": "index.js",
   "exports": {
     "require": "./index.js",
