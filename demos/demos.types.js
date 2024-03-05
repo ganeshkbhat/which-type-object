@@ -16,23 +16,7 @@
 'use strict';
 
 const { tagTester,
-  isBoolean,
-  isObject,
-  isNull,
-  isUndefined,
-  isElement,
-  isString,
-  isNumber,
-  isDate,
-  isRegExp,
-  isError,
-  isSymbol,
-  isArrayBuffer,
-  isFunction,
-  isDataView,
-  hasDataViewBug,
-  isValidDataView,
-  hasObjectTag,
+  TypeTester,
   isBufferLike } = require('../index');
 
 

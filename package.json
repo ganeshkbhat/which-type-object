@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ganeshkbhat/which-type.git"
+    "url": "git+https://github.com/ganeshkbhat/which-type-object.git"
   },
   "bugs": {
-    "url": "https://github.com/ganeshkbhat/which-type/issues"
+    "url": "https://github.com/ganeshkbhat/which-type-object/issues"
   },
-  "homepage": "https://github.com/ganeshkbhat/which-type#readme",
+  "homepage": "https://github.com/ganeshkbhat/which-type-object#readme",
   "scripts": {
     "test": "mocha --reporter spec --recursive --timeout 60000",
     "uglify": "uglifyjs --compress --mangle reserved=['$','require','exports'] index.js -o index.min.js",

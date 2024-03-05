@@ -18,8 +18,9 @@
 
 const { expect } = require('chai');
 const { TagTester,
-  isElement,
-  isBufferLike } = require('../index');
+  TypeTester,
+  isBufferLike 
+} = require('../index');
 
 
 describe('[is typed array tests] index.js Tests to check the type of an object using TagTester', () => {
@@ -79,7 +80,7 @@ describe('[is typed array tests] index.js Tests to check the type of an object u
     let expected = true;
 
     var isArray = TagTester('Array');
-    expect(isArray([1,2,3])).to.equal(expected);
+    expect(isArray([1, 2, 3])).to.equal(expected);
   });
   it('should get Array type checker using TagTester', () => {
     let actual = true;
@@ -121,7 +122,7 @@ describe('[is typed array tests] index.js Tests to check the type of an object u
     let expected = true;
 
     var isFunction = TagTester('Function');
-    expect(isFunction(()=>{})).to.equal(expected);
+    expect(isFunction(() => { })).to.equal(expected);
   });
 
   it('should get DataView type checker using TagTester', () => {
@@ -137,7 +138,7 @@ describe('[is typed array tests] index.js Tests to check the type of an object u
     let expected = true;
 
     var hasObjectTag = TagTester('Object');
-    expect(hasObjectTag({"sc": 10 })).to.equal(expected);
+    expect(hasObjectTag({ "sc": 10 })).to.equal(expected);
   });
 
 });

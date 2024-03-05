@@ -45,6 +45,12 @@ function TypeTester(name) {
   return TagTester(name) || TagTester(name) === TagTester(Function("return " + name + ";")(name));
 }
 
+// Sample Usage for 
+var isTagArrayBuffer = TagTester('ArrayBuffer');
+var isTagFunction = TagTester('Function');
+var isTagDataView = TagTester('DataView');
+var isTagObject = TagTester('Object');
+
 var typedArrayPattern = /\[object ((I|Ui)nt(8|16|32)|Float(32|64)|Uint8Clamped|Big(I|Ui)nt64)Array\]/;
 
 var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
@@ -66,12 +72,6 @@ var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
 var hasDataViewBug = (
   supportsDataView() && (!/\[native code\]/.test(String(DataView)) || isTagObject(new DataView(new ArrayBuffer(8))))
 )
-
-// Sample Usage for 
-var isTagArrayBuffer = TagTester('ArrayBuffer');
-var isTagFunction = TagTester('Function');
-var isTagDataView = TagTester('DataView');
-var isTagObject = TagTester('Object');
 
 if (!nativeIsArrayBufferView) {
   // add polyfill here
