@@ -1,11 +1,11 @@
 /**
  * 
- * Package: 
+ * Package: which-type-object
  * Author: Ganesh B
  * Description: 
- * Install: npm i  --save
- * Github: https://github.com/ganeshkbhat/
- * npmjs Link: https://www.npmjs.com/package/
+ * Install: npm i which-type-object --save
+ * Github: https://github.com/ganeshkbhat/which-type-object
+ * npmjs Link: https://www.npmjs.com/package/which-type-object
  * File: 
  * File Description: 
  * 
