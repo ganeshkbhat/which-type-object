@@ -34,11 +34,15 @@ function isBrowser() {
   if (typeof window === "object") { return true; }
 }
 
-function tagTester(name) {
+function TagTester(name) {
   var tag = '[object ' + name + ']';
   return function (obj) {
     return toString.call(obj) === tag;
   };
+}
+
+function TypeTester(name) {
+  return TagTester(name) || TagTester(name) === TagTester(Function("return " + name + ";")(name));
 }
 
 var typedArrayPattern = /\[object ((I|Ui)nt(8|16|32)|Float(32|64)|Uint8Clamped|Big(I|Ui)nt64)Array\]/;
@@ -59,11 +63,15 @@ var hasEnumBug = !{ toString: null }.propertyIsEnumerable('toString');
 var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
   'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
 
+var hasDataViewBug = (
+  supportsDataView() && (!/\[native code\]/.test(String(DataView)) || isTagObject(new DataView(new ArrayBuffer(8))))
+)
+
 // Sample Usage for 
-var isArrayBuffer = tagTester('ArrayBuffer');
-var isFunction = tagTester('Function');
-var isDataView = tagTester('DataView');
-var isTagObject = tagTester('Object');
+var isTagArrayBuffer = TagTester('ArrayBuffer');
+var isTagFunction = TagTester('Function');
+var isTagDataView = TagTester('DataView');
+var isTagObject = TagTester('Object');
 
 if (!nativeIsArrayBufferView) {
   // add polyfill here
@@ -93,30 +101,31 @@ var isBufferLike = createSizePropertyCheck(getByteLength);
 function isTypedArray(obj) {
   return (supportsArrayBuffer) ?
     (
-      nativeIsArrayBufferView ? (nativeIsArrayBufferView(obj) && !isDataView(obj)) :
+      nativeIsArrayBufferView ? (nativeIsArrayBufferView(obj) && !isTagDataView(obj)) :
         isBufferLike(obj) && typedArrayPattern.test(toString.call(obj))
     ) : false;
 }
 
 function alternateIsDataView(obj) {
-  return obj != null && isFunction(obj.getInt8) && isArrayBuffer(obj.buffer);
+  return obj != null && isTagFunction(obj.getInt8) && isTagArrayBuffer(obj.buffer);
 }
 
-var hasDataViewBug = (
-  supportsDataView() && (!/\[native code\]/.test(String(DataView)) || isTagObject(new DataView(new ArrayBuffer(8))))
-)
-
-var isValidDataView = (hasDataViewBug ? alternateIsDataView : isDataView);
+var isValidDataView = (hasDataViewBug ? alternateIsDataView : isTagDataView);
 
 if (!isBrowser()) {
 
   module.exports = {
-    tagTester,
-    isArrayBuffer,
-    isFunction,
-    isDataView,
+    TagTester,
+    TypeTester,
+    isTagArrayBuffer,
+    isTagFunction,
+    isTagDataView,
     nativeIsArrayBufferView,
+    nativeIsArray,
+    nativeKeys,
+    nativeCreate,
     hasDataViewBug,
+    hasEnumBug,
     isValidDataView,
     isTagObject,
     isBufferLike,
@@ -124,15 +133,21 @@ if (!isBrowser()) {
   }
 
   module.exports.default = {
-    tagTester,
-    isArrayBuffer,
-    isFunction,
-    isDataView,
+    TagTester,
+    TypeTester,
+    isTagArrayBuffer,
+    isTagFunction,
+    isTagDataView,
     nativeIsArrayBufferView,
+    nativeIsArray,
+    nativeKeys,
+    nativeCreate,
     hasDataViewBug,
+    hasEnumBug,
     isValidDataView,
     isTagObject,
     isBufferLike,
     isTypedArray
   }
+
 }
