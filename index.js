@@ -9,6 +9,11 @@
  * File: 
  * File Description: 
  * 
+ * CREDITS: Some sections of the code has been extracted from underscore JS and modified
+ * https://underscorejs.org/docs/modules/isDataView.html
+ * https://underscorejs.org/docs/modules/_tagTester.html
+ * 
+ * 
 */
 
 /* eslint no-console: 0 */
@@ -36,27 +41,33 @@ function tagTester(name) {
   };
 }
 
+var typedArrayPattern = /\[object ((I|Ui)nt(8|16|32)|Float(32|64)|Uint8Clamped|Big(I|Ui)nt64)Array\]/;
+
+var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+
 var supportsArrayBuffer = () => typeof ArrayBuffer !== 'undefined',
   ObjProto = Object.prototype,
   toString = ObjProto.toString,
   supportsDataView = () => typeof DataView !== 'undefined',
   nativeIsArrayBufferView = supportsArrayBuffer() && ArrayBuffer.isView;
 
+var nativeIsArray = Array.isArray,
+  nativeKeys = Object.keys,
+  nativeCreate = Object.create;
+
+var hasEnumBug = !{ toString: null }.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
+  'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+
 // Sample Usage for 
 var isArrayBuffer = tagTester('ArrayBuffer');
 var isFunction = tagTester('Function');
 var isDataView = tagTester('DataView');
-var hasObjectTag = tagTester('Object');
+var isTagObject = tagTester('Object');
 
-function alternateIsDataView(obj) {
-  return obj != null && isFunction$1(obj.getInt8) && isArrayBuffer(obj.buffer);
+if (!nativeIsArrayBufferView) {
+  // add polyfill here
 }
-
-var hasDataViewBug = (
-  supportsDataView() && (!/\[native code\]/.test(String(DataView)) || hasObjectTag(new DataView(new ArrayBuffer(8))))
-)
-
-var isValidDataView = (hasDataViewBug ? alternateIsDataView : isDataView);
 
 function getShallowProperty(key) {
   return function (obj) {
@@ -79,17 +90,37 @@ function createSizePropertyCheck(getSizeProperty) {
 var getByteLength = getShallowProperty('byteLength');
 var isBufferLike = createSizePropertyCheck(getByteLength);
 
+function isTypedArray(obj) {
+  return (supportsArrayBuffer) ?
+    (
+      nativeIsArrayBufferView ? (nativeIsArrayBufferView(obj) && !isDataView(obj)) :
+        isBufferLike(obj) && typedArrayPattern.test(toString.call(obj))
+    ) : false;
+}
+
+function alternateIsDataView(obj) {
+  return obj != null && isFunction(obj.getInt8) && isArrayBuffer(obj.buffer);
+}
+
+var hasDataViewBug = (
+  supportsDataView() && (!/\[native code\]/.test(String(DataView)) || isTagObject(new DataView(new ArrayBuffer(8))))
+)
+
+var isValidDataView = (hasDataViewBug ? alternateIsDataView : isDataView);
+
 if (!isBrowser()) {
-  
+
   module.exports = {
     tagTester,
     isArrayBuffer,
     isFunction,
     isDataView,
+    nativeIsArrayBufferView,
     hasDataViewBug,
     isValidDataView,
-    hasObjectTag,
-    isBufferLike
+    isTagObject,
+    isBufferLike,
+    isTypedArray
   }
 
   module.exports.default = {
@@ -97,9 +128,11 @@ if (!isBrowser()) {
     isArrayBuffer,
     isFunction,
     isDataView,
+    nativeIsArrayBufferView,
     hasDataViewBug,
     isValidDataView,
-    hasObjectTag,
-    isBufferLike
+    isTagObject,
+    isBufferLike,
+    isTypedArray
   }
 }
